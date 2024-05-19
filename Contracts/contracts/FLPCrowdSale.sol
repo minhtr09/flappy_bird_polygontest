@@ -7,26 +7,26 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 contract FLPCrowdSale is Ownable {
     using SafeERC20 for IERC20;
     address payable private _wallet;
-    uint256 public MATIC_rate;
+    uint256 public BNB_rate;
     uint256 public USDT_rate;
     IERC20 public token;
     IERC20 public usdtToken;
 
-    event BuyTokenByMATIC(address buyer, uint256 amount);
+    event BuyTokenByBNB(address buyer, uint256 amount);
     event BuyTokenByUSDT(address buyer, uint256 amount);
     event SetUSDTToken(IERC20 tokenAddress);
-    event SetMATICRate(uint256 newRate);
+    event SetBNBRate(uint256 newRate);
     event SetUSDTRate(uint256 newRate);
 
     constructor(
         address initialOwner,
-        uint256 matic_rate,
+        uint256 bnb_rate,
         uint256 usdt_rate,
         address payable wallet,
         IERC20 icotoken
     ) Ownable(initialOwner) {
         _wallet = wallet;
-        MATIC_rate = matic_rate;
+        BNB_rate = bnb_rate;
         USDT_rate = usdt_rate;
         token = icotoken;
     }
@@ -36,9 +36,9 @@ contract FLPCrowdSale is Ownable {
         emit SetUSDTToken(token_address);
     }
 
-    function setMATICRate(uint256 newRate) public onlyOwner {
-        MATIC_rate = newRate;
-        emit SetMATICRate(newRate);
+    function setBNBRate(uint256 newRate) public onlyOwner {
+        BNB_rate = newRate;
+        emit SetBNBRate(newRate);
     }
 
     function setUSDTRate(uint256 newRate) public onlyOwner {
@@ -46,25 +46,24 @@ contract FLPCrowdSale is Ownable {
         emit SetUSDTRate(newRate);
     }
 
+    function buyTokenByBNB() external payable {
+        uint256 bnbAmount = msg.value;
+        uint256 amount = getTokenAmountBNB(bnbAmount);
 
-    function buyTokenByMATIC() external payable {
-        uint256 maticAmount = msg.value;
-        uint256 amount = getTokenAmountMATIC(maticAmount);
-        
         require(amount > 0, "Amount is zero");
         require(
             token.balanceOf(address(this)) >= amount,
             "Insufficient account balance"
         );
         require(
-            msg.sender.balance >= maticAmount,
+            msg.sender.balance >= bnbAmount,
             "Insufficient account balance"
         );
-        payable(_wallet).transfer(maticAmount);
+        payable(_wallet).transfer(bnbAmount);
         SafeERC20.safeTransfer(token, msg.sender, amount);
-        emit BuyTokenByMATIC(msg.sender, amount);
+        emit BuyTokenByBNB(msg.sender, amount);
     }
-    
+
     function buyTokenByUSDT(uint256 USDTAmount) external {
         uint256 amount = getTokenAmountUSDT(USDTAmount);
         require(
@@ -81,19 +80,15 @@ contract FLPCrowdSale is Ownable {
         emit BuyTokenByUSDT(msg.sender, amount);
     }
 
-    function getTokenAmountMATIC(uint256 MATICAmount)
-        public
-        view
-        returns (uint256)
-    {
-        return MATICAmount * MATIC_rate;
+    function getTokenAmountBNB(
+        uint256 BNBAmount
+    ) public view returns (uint256) {
+        return BNBAmount * BNB_rate;
     }
 
-    function getTokenAmountUSDT(uint256 USDTAmount)
-        public
-        view
-        returns (uint256)
-    {
+    function getTokenAmountUSDT(
+        uint256 USDTAmount
+    ) public view returns (uint256) {
         return USDTAmount * USDT_rate;
     }
 
