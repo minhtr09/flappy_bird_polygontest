@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "hardhat-deploy": "^0.12.4"
+  }
+}
