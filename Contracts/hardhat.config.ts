@@ -22,7 +22,7 @@ module.exports = {
       accounts: [PRIVATE_KEY],
     },
     saigon: {
-      // chainId: 2021,
+      chainId: 2021,
       url: "https://saigon-testnet.roninchain.com/rpc",
       accounts: [PRIVATE_KEY],
     },
@@ -34,12 +34,11 @@ module.exports = {
     customChains: [
       {
         network: "saigon",
-        chainId: 2021,
+        chainId: 2020,
         urls: {
           apiURL: "https://sourcify.roninchain.com/server/",
         },
       },
     ],
   },
- 
 };

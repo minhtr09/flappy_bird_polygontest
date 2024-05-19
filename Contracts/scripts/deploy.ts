@@ -1,19 +1,19 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const Floppy = await ethers.getContractFactory("Floppy");
-  const floppy = await Floppy.deploy(
-    "0x74fe5f04ccbe9c0dbcd0039cfb8d7212b2e6e452"
-  );
-  console.log("Floppy address: ", floppy.target);
+  // const Floppy = await ethers.getContractFactory("Floppy");
+  // const floppy = await Floppy.deploy(
+  //   "0x74fe5f04ccbe9c0dbcd0039cfb8d7212b2e6e452"
+  // );
+  // console.log("Floppy address: ", floppy.target);
 
   // const USDT = await ethers.getContractFactory("USDT");
   // const usdt = await USDT.deploy("0xf9577C9df5141B8793df5B869E0548dD8fBe3Ce9");
   // console.log("USDT address: ", usdt.target);
 
-  // const Bird = await ethers.getContractFactory("Bird");
-  // const bird = await Bird.deploy("0xf9577C9df5141B8793df5B869E0548dD8fBe3Ce9");
-  // console.log("Bird NFT address: ", bird.target);
+  const Bird = await ethers.getContractFactory("Bird");
+  const bird = await Bird.deploy("0x74fe5f04ccbe9c0dbcd0039cfb8d7212b2e6e452");
+  console.log("Bird NFT address: ", bird.target);
 
 
   // const FLPCrowdSale = await ethers.getContractFactory("FLPCrowdSale");
